@@ -8,7 +8,4 @@ router.route('/create')
 router.route('/login')
 .post(customerController.loginCustomer);
 
-router.route('/validate')
-.get(customerController.validateCustomer);
-
 module.exports = router;

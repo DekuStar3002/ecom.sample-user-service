@@ -1,5 +1,4 @@
 const { customerService } = require("../services");
-const { CustomError } = require("../utils");
 
 const createCustomer = async (req, res) => { 
   try {
@@ -27,24 +26,4 @@ const loginCustomer = async (req, res) => {
   }
 };
 
-const validateCustomer = async (req, res) => {
-  try {
-    const token = req.headers.authorization.split(' ')[1];
-    const userData = await customerService.validateCustomer(token);
-    res.status(200).json({
-      data: userData
-    });
-  } catch (error) {
-    if(error instanceof CustomError){
-      res.status(error.status).json({
-        error: error.message
-      });
-      return;
-    }
-    res.status(500).json({
-      error: error.message
-    });
-  }
-}
-
-module.exports = { createCustomer, loginCustomer, validateCustomer };
+module.exports = { createCustomer, loginCustomer };

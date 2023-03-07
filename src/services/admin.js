@@ -1,5 +1,5 @@
 const { User } = require('../../database/models');
-const { passwordUtil, redisUtil, CustomError } = require('../utils');
+const { passwordUtil, redisUtil } = require('../utils');
 const jwt = require('jsonwebtoken');
 
 const createAdmin = async ({ name, email, password }) => {
@@ -28,20 +28,4 @@ const loginAdmin = async ({ email, password }) => {
   }
 };
 
-const validateAdmin = async (token) => {
-  const userData = await jwt.verify(token, process.env.JWT_SECRET);
-
-  if(!userData) {
-    throw new CustomError(400, 'Unauthorized User(token error)');
-  }
-
-  const redisToken = await redisUtil.getFromRedisStore(userData.id, userData.type);
-
-  if(redisToken !== token) {
-    throw new CustomError(400, 'Unauthorized User(token invalid)');
-  }
-
-  return userData;
-}
-
-module.exports = { createAdmin, loginAdmin, validateAdmin };
+module.exports = { createAdmin, loginAdmin };

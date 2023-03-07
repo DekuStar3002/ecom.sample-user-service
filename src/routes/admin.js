@@ -8,7 +8,4 @@ router.route('/create')
 router.route('/login')
 .post(adminController.loginAdmin);
 
-router.route('/validate')
-.get(adminController.validateAdmin);
-
 module.exports = router;

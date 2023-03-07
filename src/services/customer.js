@@ -1,7 +1,6 @@
 const { User } = require('../../database/models');
 const { passwordUtil, redisUtil } = require('../utils');
 const jwt = require('jsonwebtoken');
-const { CustomError } = require('../utils');
 
 const createCustomer = async ({ name, email, password }) => {
   const hashedPassword = await passwordUtil.hashPassword(password);
@@ -29,20 +28,4 @@ const loginCustomer = async ({ email, password }) => {
   }
 }
 
-const validateCustomer = async (token) => {
-  const userData = await jwt.verify(token, process.env.JWT_SECRET);
-
-  if(!userData) {
-    throw new CustomError(400, 'Unauthorized User(token error)');
-  }
-
-  const redisToken = await redisUtil.getFromRedisStore(userData.id, userData.type);
-
-  if(redisToken !== token) {
-    throw new CustomError(400, 'Unauthorized User(token invalid)');
-  }
-
-  return userData;
-}
-
-module.exports = { createCustomer, loginCustomer, validateCustomer };
+module.exports = { createCustomer, loginCustomer };
