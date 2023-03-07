@@ -1,4 +1,5 @@
 const { userService } = require('../services');
+const { CustomError } = require('../utils');
 
 const validateUser = async (req, res) => {
   try {
